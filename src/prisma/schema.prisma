@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Page {
+  id          BigInt      @id @default(autoincrement())
+  name        String      @db.VarChar(255)
+  slug        String      @unique @db.VarChar(255)
+  description String?     @db.Text
+  createdAt   DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime    @updatedAt @db.Timestamp(0)
+  components  Component[] // Relacionamento com componentes
+}
+
+model Component {
+  id        BigInt        @id @default(autoincrement())
+  pageId    BigInt
+  parentId  BigInt? // Relacionamento com o componente pai
+  type      ComponentType
+  value     String?       @db.Text // Conteúdo textual para `text` ou `richText`
+  filePath  String?       @db.VarChar(255) // Caminho do arquivo para imagens
+  order     Int?
+  sessionUuid String?     @db.VarChar(37) // Campo para salvar um UUID na sessão
+  createdAt DateTime      @default(now()) @db.Timestamp(0)
+  updatedAt DateTime      @updatedAt @db.Timestamp(0)
+
+  // Relacionamentos
+  page     Page        @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  parent   Component?  @relation("ParentComponent", fields: [parentId], references: [id], onDelete: Cascade)
+  children Component[] @relation("ParentComponent")
+
+  @@index([pageId]) // Índice para otimizar consultas por página
+  @@index([parentId]) // Índice para otimizar consultas por pai
+}
+
+// Enum para os tipos de componentes
+enum ComponentType {
+  text
+  richText
+  image
+  grid
+  banner
+}
