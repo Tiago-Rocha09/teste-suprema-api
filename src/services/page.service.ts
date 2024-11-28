@@ -18,7 +18,7 @@ export const fetchAllPages = async (searchTerm?: string) => {
 
 export const selectAllPages = async () => {
   return await selectPages();
-}
+};
 
 export const fetchPageById = async (id: number) => {
   const page = await fetchPage(id);
@@ -39,7 +39,7 @@ export const createNewPage = async (
   const { name, slug, description, sections } = data;
 
   const formattedSections: any = await formatSectionsToDB(sections);
-
+  console.log({ formattedSections });
   const pageData = {
     name,
     slug,
@@ -63,7 +63,7 @@ export const updateExistingPage = async (
   }
 
   const formattedSections: any = await formatSectionsToDB(sections);
-
+  console.log({ formattedSections });
   const pageData = {
     name,
     slug,
