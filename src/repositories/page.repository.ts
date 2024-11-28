@@ -37,7 +37,11 @@ export const fetchPage = async (id: number) => {
   const page = await prisma.page.findUnique({
     where: { id },
     include: {
-      components: true,
+      components: {
+        orderBy: {
+          order: "asc",
+        },
+      },
     },
   });
 
@@ -62,7 +66,11 @@ export const fetchPageContent = async (slug: string) => {
   const page = await prisma.page.findUnique({
     where: { slug },
     include: {
-      components: true,
+      components: {
+        orderBy: {
+          order: "asc",
+        },
+      },
     },
   });
 
