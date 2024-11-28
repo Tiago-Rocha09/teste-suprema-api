@@ -49,6 +49,31 @@ export const fetchPage = async (id: number) => {
   return groupComponents(formattedPage);
 };
 
+export const fetchPageContent = async (slug: string) => {
+  const page = await prisma.page.findUnique({
+    where: { slug },
+    include: {
+      components: true,
+    },
+  });
+
+  if (!page) {
+    throw new Error("Página não encontrada.");
+  }
+  const formattedPage = {
+    ...page,
+    id: page.id.toString(),
+    components: page.components.map((component: Component) => ({
+      ...component,
+      sessionUuid: component.sessionUuid,
+      id: component.id.toString(),
+      parentId: component.parentId?.toString() || null,
+      pageId: component.pageId.toString(),
+    })),
+  };
+  return groupComponents(formattedPage);
+};
+
 export const createPage = async (data: CreatePageSchema) => {
   const existingPage = await prisma.page.findUnique({
     where: { slug: data.slug },

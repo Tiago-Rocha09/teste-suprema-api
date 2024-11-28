@@ -6,6 +6,7 @@ import {
   pageExists,
   updatePage,
   deletePage,
+  fetchPageContent,
 } from "../repositories/page.repository";
 import { CreatePageSchema } from "../schemas/page.schema";
 import { formatSectionsToDB } from "../utils/functions";
@@ -16,6 +17,12 @@ export const fetchAllPages = async (searchTerm?: string) => {
 
 export const fetchPageById = async (id: number) => {
   const page = await fetchPage(id);
+  if (!page) throw new Error("Página não encontrada.");
+  return page;
+};
+
+export const fetchPageContentBySlug = async (slug: string) => {
+  const page = await fetchPageContent(slug);
   if (!page) throw new Error("Página não encontrada.");
   return page;
 };
