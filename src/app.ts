@@ -15,6 +15,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.send("API Desafio Suprema");
+});
+
 app.use(express.json());
 app.use("/pages", pageRoutes);
 
