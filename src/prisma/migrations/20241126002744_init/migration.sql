@@ -2,7 +2,7 @@
 CREATE TABLE `Page` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `slug` VARCHAR(255) NOT NULL,
+    `slug` VARCHAR(150) NOT NULL,
     `description` TEXT NULL,
     `createdAt` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updatedAt` TIMESTAMP(0) NOT NULL,
