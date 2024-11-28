@@ -7,6 +7,7 @@ import {
   updatePage,
   deletePage,
   fetchPageContent,
+  selectPages,
 } from "../repositories/page.repository";
 import { CreatePageSchema } from "../schemas/page.schema";
 import { formatSectionsToDB } from "../utils/functions";
@@ -14,6 +15,10 @@ import { formatSectionsToDB } from "../utils/functions";
 export const fetchAllPages = async (searchTerm?: string) => {
   return await fetchPages(searchTerm);
 };
+
+export const selectAllPages = async () => {
+  return await selectPages();
+}
 
 export const fetchPageById = async (id: number) => {
   const page = await fetchPage(id);

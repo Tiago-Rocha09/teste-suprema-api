@@ -24,6 +24,15 @@ export const fetchPages = async (searchTerm?: string) => {
   }));
 };
 
+export const selectPages = async () => {
+  const pages = await prisma.page.findMany();
+
+  return pages.map((page: Page) => ({
+    label: page.name,
+    value: page.slug,
+  }));
+};
+
 export const fetchPage = async (id: number) => {
   const page = await prisma.page.findUnique({
     where: { id },

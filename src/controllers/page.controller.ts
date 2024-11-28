@@ -6,6 +6,7 @@ import {
   fetchPageById,
   deletePageById,
   fetchPageContentBySlug,
+  selectAllPages,
 } from "../services/page.service";
 import { createPageSchema } from "../schemas/page.schema";
 import { transformSectionsData } from "../utils/functions";
@@ -15,6 +16,17 @@ export const getAllPages = async (req: Request, res: Response) => {
   try {
     const searchTerm = req.query.searchTerm as string;
     const pages = await fetchAllPages(searchTerm);
+    res.json(pages);
+  } catch (error) {
+    console.log({ error });
+
+    res.status(500).json({ error: "Erro ao buscar páginas." });
+  }
+};
+
+export const selectPages = async (req: Request, res: Response) => {
+  try {
+    const pages = await selectAllPages();
     res.json(pages);
   } catch (error) {
     console.log({ error });
