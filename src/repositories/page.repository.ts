@@ -1,3 +1,4 @@
+import { Component, Page } from "@prisma/client";
 import prisma from "../prisma/prisma";
 import { CreatePageSchema } from "../schemas/page.schema";
 import { groupComponents } from "../utils/functions";
@@ -17,7 +18,7 @@ export const fetchPages = async (searchTerm?: string) => {
     where: whereClause,
   });
 
-  return pages.map((page) => ({
+  return pages.map((page: Page) => ({
     ...page,
     id: page.id.toString(),
   }));
@@ -37,7 +38,7 @@ export const fetchPage = async (id: number) => {
   const formattedPage = {
     ...page,
     id: page.id.toString(),
-    components: page.components.map((component) => ({
+    components: page.components.map((component: Component) => ({
       ...component,
       sessionUuid: component.sessionUuid,
       id: component.id.toString(),
