@@ -9,6 +9,9 @@
     "start": "node dist/app.js",
     "postinstall": "prisma generate"
   },
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
