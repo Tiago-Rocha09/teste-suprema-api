@@ -97,7 +97,7 @@ export const createPage = async (data: CreatePageSchema) => {
     parentId: bigint | null = null
   ): any[] => {
     return sections.map((section) => {
-      const { type, value, children, sessionUuid } = section;
+      const { type, value, children, sessionUuid, order } = section;
 
       const formattedSection = {
         type,
@@ -105,6 +105,7 @@ export const createPage = async (data: CreatePageSchema) => {
         pageId,
         parentId,
         sessionUuid,
+        order,
         children: children ? formatComponents(children, pageId) : [],
       };
 
@@ -136,6 +137,7 @@ export const createPage = async (data: CreatePageSchema) => {
           value: section.value,
           pageId: section.pageId,
           parentId: parentId,
+          order: section.order,
           sessionUuid: section.sessionUuid,
         },
       });
@@ -178,7 +180,7 @@ export const updatePage = async (pageId: number, data: CreatePageSchema) => {
     parentId: bigint | null = null
   ): any[] => {
     return sections.map((section) => {
-      const { type, value, children, sessionUuid } = section;
+      const { type, value, children, sessionUuid, order } = section;
 
       const formattedSection = {
         type,
@@ -186,6 +188,7 @@ export const updatePage = async (pageId: number, data: CreatePageSchema) => {
         pageId,
         parentId,
         sessionUuid,
+        order,
         children: children ? formatComponents(children, pageId) : [],
       };
 
@@ -206,6 +209,7 @@ export const updatePage = async (pageId: number, data: CreatePageSchema) => {
           value: section.value,
           pageId,
           parentId,
+          order: section.order,
           sessionUuid: section.sessionUuid,
         },
       });

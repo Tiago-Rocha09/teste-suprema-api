@@ -110,52 +110,63 @@ export const formatSectionsToDB = async (sections: any) => {
   const formattedSections: any = [];
 
   if (sections) {
-    for (const section of sections) {
+    for (const [index, section] of sections.entries()) {
       if (section.type === "image" && section.value.buffer) {
-        const fileName = await uploadToS3(section.value);
-        formattedSections.push({
-          type: "image",
-          sessionUuid: section.sessionUuid,
-          value: fileName,
-        });
+      const fileName = await uploadToS3(section.value);
+      formattedSections.push({
+        type: "image",
+        sessionUuid: section.sessionUuid,
+        value: fileName,
+        order: index,
+      });
       } else if (
-        section.type === "image" &&
-        typeof section.value === "string"
+      section.type === "image" &&
+      typeof section.value === "string"
       ) {
-        formattedSections.push({
-          type: "image",
-          sessionUuid: section.sessionUuid,
-          value: fileNameFromUrl(section.value),
-        });
+      formattedSections.push({
+        type: "image",
+        sessionUuid: section.sessionUuid,
+        value: fileNameFromUrl(section.value),
+        order: index,
+      });
       } else if (section.children && section.children.length > 0) {
-        const formattedChildren: any = [];
-        for (const child of section.children) {
-          if (child.type === "image" && child.value.buffer) {
-            const childFileName = await uploadToS3(child.value);
-            formattedChildren.push({
-              type: "image",
-              sessionUuid: child.sessionUuid,
-              value: childFileName,
-            });
-          } else if (
-            child.type === "image" &&
-            typeof child.value === "string"
-          ) {
-            formattedChildren.push({
-              type: "image",
-              sessionUuid: child.sessionUuid,
-              value: fileNameFromUrl(child.value),
-            });
-          } else {
-            formattedChildren.push(child);
-          }
-        }
-        formattedSections.push({
-          ...section,
-          children: formattedChildren,
+      const formattedChildren: any = [];
+      for (const [childIndex, child] of section.children.entries()) {
+        if (child.type === "image" && child.value.buffer) {
+        const childFileName = await uploadToS3(child.value);
+        formattedChildren.push({
+          type: "image",
+          sessionUuid: child.sessionUuid,
+          value: childFileName,
+          order: childIndex,
         });
+        } else if (
+        child.type === "image" &&
+        typeof child.value === "string"
+        ) {
+        formattedChildren.push({
+          type: "image",
+          sessionUuid: child.sessionUuid,
+          value: fileNameFromUrl(child.value),
+          order: childIndex,
+        });
+        } else {
+        formattedChildren.push({
+          ...child,
+          order: childIndex,
+        });
+        }
+      }
+      formattedSections.push({
+        ...section,
+        children: formattedChildren,
+        order: index,
+      });
       } else {
-        formattedSections.push(section);
+      formattedSections.push({
+        ...section,
+        order: index,
+      });
       }
     }
   }
